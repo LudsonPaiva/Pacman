@@ -26,7 +26,6 @@ class Pacman:
         self.centro_x = int(self.coluna * self.tamanho + self.raio)
         self.centro_y = int(self.linha * self.tamanho + self.raio)
 
-
     def pintar(self, tela):
         # Desenhar o corpo do Pacman
         pygame.draw.circle(tela, AMARELO, (self.centro_x, self.centro_y), self.raio, 0)
@@ -65,6 +64,13 @@ class Pacman:
                 elif e.key == pygame.K_DOWN:
                     self.vel_y = 0
 
+    def processar_eventos_mouse(self, eventos):
+        delay = 100
+        for e in eventos:
+            if e.type == pygame.MOUSEMOTION:
+                mouse_x, mouse_y = e.pos
+                self.coluna = (mouse_x - self.centro_x) / delay
+                self.linha = (mouse_y - self.centro_y) / delay
 
 
 if __name__ == "__main__":
@@ -85,5 +91,4 @@ if __name__ == "__main__":
         for e in eventos:
             if e.type == pygame.QUIT:
                 exit()
-        pacman.processar_eventos(eventos)
-
+        pacman.processar_eventos_mouse(eventos)
