@@ -11,7 +11,7 @@ VELOCIDADE = 1
 
 
 class Cenario:
-    def __int__(self, tamanho):
+    def __init__(self, tamanho):
         self.tamanho = tamanho
         self.matriz = [
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -46,8 +46,8 @@ class Cenario:
         ]
 
     def pintar_linha(self, tela, numero_linha, linha):
-        for mumero_coluna, coluna in enumerate(linha):
-            x = mumero_coluna * self.tamanho
+        for numero_coluna, coluna in enumerate(linha):
+            x = numero_coluna * self.tamanho
             y = numero_linha * self.tamanho
             half = self.tamanho // 2
             cor = PRETO
@@ -118,14 +118,6 @@ class Pacman:
                 elif e.key == pygame.K_DOWN:
                     self.vel_y = 0
 
-    def processar_eventos_mouse(self, eventos):
-        delay = 100
-        for e in eventos:
-            if e.type == pygame.MOUSEMOTION:
-                mouse_x, mouse_y = e.pos
-                self.coluna = (mouse_x - self.centro_x) / delay
-                self.linha = (mouse_y - self.centro_y) / delay
-
 
 if __name__ == "__main__":
     size = 600 // 30
@@ -148,4 +140,4 @@ if __name__ == "__main__":
         for e in eventos:
             if e.type == pygame.QUIT:
                 exit()
-        pacman.processar_eventos_mouse(eventos)
+        pacman.processar_eventos(eventos)
