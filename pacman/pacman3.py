@@ -3,6 +3,7 @@ import pygame
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600), 0)
+fonte = pygame.font.SysFont('arial', 24, True, False)
 
 AMARELO = (255, 255, 0)
 PRETO = (0, 0, 0)
@@ -14,6 +15,7 @@ class Cenario:
     def __init__(self, tamanho, pac):
         self.pacman = pac
         self.tamanho = tamanho
+        self.pontos = 0
         self.matriz = [
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
@@ -46,6 +48,11 @@ class Cenario:
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
         ]
 
+    def pintar_pontos(self, tela):
+        pontos_x = 30 * self.tamanho
+        img_pontos = fonte.render('Score: {}'.format(self.pontos), True, AMARELO)
+        tela.blit(img_pontos, (pontos_x, 50))
+
     def pintar_linha(self, tela, numero_linha, linha):
         for numero_coluna, coluna in enumerate(linha):
             x = numero_coluna * self.tamanho
@@ -62,6 +69,7 @@ class Cenario:
     def pintar(self, tela):
         for numero_linha, linha in enumerate(self.matriz):
             self.pintar_linha(tela, numero_linha, linha)
+        self.pintar_pontos(tela)
 
     def calcular_regras(self):
         col = self.pacman.coluna_intencao
@@ -69,7 +77,9 @@ class Cenario:
         if 0 <= col < 28 and 0 <= lin < 29:
             if self.matriz[lin][col] != 2:
                 self.pacman.aceitar_movimento()
-
+                if self.matriz[lin][col] == 1:
+                    self.pontos += 1
+                    self.matriz[lin][col] = 0
 
 class Pacman:
     def __init__(self, tamanho):
